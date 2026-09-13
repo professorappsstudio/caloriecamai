@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalorieCam AI - Snap, Track & Master Your Nutrition</title>
+    <meta name="description" content="CalorieCam AI is the smartest Android calorie counter. Snap food photos for instant AI nutritional analysis, net calories, macro tracking, and personal diet coaching.">
+    <meta name="keywords" content="CalorieCam AI, calorie counter, macro tracker, food photo scanner, AI diet coach, nutrition app, Android calorie tracker">
+    <link rel="icon" type="image/png" href="play_store_assets/caloriecam-pro-complete-512-removebg-preview.png">
+    
+    <!-- OpenGraph Social Sharing -->
+    <meta property="og:title" content="CalorieCam AI - Next-Gen Food Photo & Calorie Tracker">
+    <meta property="og:description" content="Calculate calories, protein, carbs, and fats in 1 second by snapping a photo. Powered by Google Gemini Vision AI.">
+    <meta property="og:image" content="play_store_assets/caloriecam-ai-feature-1024x500.png">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0BB580;
+            --primary-dark: #089367;
+            --primary-light: #2EE5A9;
+            --primary-soft: rgba(11, 181, 128, 0.12);
+            --primary-glow: rgba(11, 181, 128, 0.35);
+            
+            --bg-page: #080C0E;
+            --bg-card: #11171C;
+            --bg-card-hover: #162027;
+            --bg-glass: rgba(17, 23, 28, 0.75);
+            
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(11, 181, 128, 0.4);
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            
+            --macro-protein: #5B8DEF;
+            --macro-carbs: #C68A00;
+            --macro-fat: #9B59B6;
+            --token-orange: #F39C12;
+            
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --shadow-card: 0 16px 36px -10px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 50px rgba(11, 181, 128, 0.18);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.65;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ambient Glow Backgrounds */
+        .ambient-glow {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(circle at 50% -10%, rgba(11, 181, 128, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 10% 40%, rgba(11, 181, 128, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 60%, rgba(243, 156, 18, 0.04) 0%, transparent 40%);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(8, 12, 14, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .brand img {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px var(--primary-glow);
+            transition: transform 0.3s ease;
+        }
+
+        .brand:hover img {
+            transform: scale(1.06) rotate(3deg);
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-name span {
+            color: var(--primary);
+        }
+
+        .brand-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.94rem;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #FFFFFF;
+            padding: 10px 22px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 700;
+            box-shadow: 0 4px 18px var(--primary-glow);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(11, 181, 128, 0.45);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 0 60px;
+            position: relative;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-soft);
+            border: 1px solid var(--primary-glow);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            margin-bottom: 24px;
+            box-shadow: 0 2px 10px rgba(11, 181, 128, 0.1);
+        }
+
+        .hero-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.6rem;
+            font-weight: 800;
+            line-height: 1.12;
+            letter-spacing: -1.2px;
+            margin-bottom: 22px;
+        }
+
+        .hero-title .gradient-text {
+            background: linear-gradient(135deg, #FFFFFF 30%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-title .highlight {
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-desc {
+            font-size: 1.16rem;
+            color: var(--text-secondary);
+            margin-bottom: 36px;
+            max-width: 560px;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 44px;
+        }
+
+        .btn-playstore {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #151C22;
+            border: 1.5px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: #FFFFFF;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-playstore:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(11, 181, 128, 0.25);
+            background: #1B252E;
+        }
+
+        .btn-playstore svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+
+        .btn-text-block {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .btn-text-block .tiny {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            line-height: 1;
+        }
+
+        .btn-text-block .big {
+            font-size: 1.1rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 26px;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 0.98rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .hero-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat-item h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-item h3 span {
+            color: var(--primary);
+        }
+
+        .stat-item p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Hero Device Mockup */
+        .hero-mockup-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mockup-glow {
+            position: absolute;
+            width: 320px;
+            height: 540px;
+            background: var(--primary);
+            filter: blur(90px);
+            opacity: 0.22;
+            z-index: 0;
+            border-radius: 50%;
+        }
+
+        .phone-frame {
+            position: relative;
+            z-index: 2;
+            width: 310px;
+            background: #0D1318;
+            border: 8px solid #222B35;
+            border-radius: 46px;
+            box-shadow: 
+                0 25px 60px -15px rgba(0, 0, 0, 0.8),
+                0 0 0 1px rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .phone-frame:hover {
+            transform: translateY(-6px) scale(1.02);
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 20px;
+            background: #222B35;
+            border-radius: 0 0 14px 14px;
+            z-index: 10;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 36px;
+        }
+
+        /* Floating Micro Badges */
+        .floating-card {
+            position: absolute;
+            z-index: 4;
+            background: rgba(17, 23, 28, 0.9);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border-hover);
+            border-radius: var(--radius-md);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+            animation: floatSlow 4s ease-in-out infinite alternate;
+        }
+
+        .floating-card-1 {
+            top: 15%;
+            left: -35px;
+        }
+
+        .floating-card-2 {
+            bottom: 18%;
+            right: -30px;
+            animation-delay: 2s;
+        }
+
+        @keyframes floatSlow {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
+        }
+
+        .floating-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .floating-card-1 .floating-icon {
+            background: rgba(243, 156, 18, 0.15);
+            color: var(--token-orange);
+        }
+
+        .floating-card-2 .floating-icon {
+            background: rgba(11, 181, 128, 0.15);
+            color: var(--primary);
+        }
+
+        .floating-text h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .floating-text p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Section Header */
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--primary-soft);
+            color: var(--primary);
+            border: 1px solid var(--primary-glow);
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+        }
+
+        /* Play Store Screenshot Slider */
+        .screenshots-section {
+            padding: 80px 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(17, 23, 28, 0.5) 50%, transparent 100%);
+        }
+
+        .slider-controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .slider-arrows {
+            display: flex;
+            gap: 10px;
+        }
+
+        .slider-arrow-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .slider-arrow-btn:hover {
+            background: var(--primary);
+            color: #FFFFFF;
+            border-color: var(--primary);
+        }
+
+        .slider-track {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 20px 0 40px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+
+        .slider-track::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .slider-track::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .screenshot-card {
+            flex: 0 0 280px;
+            scroll-snap-align: start;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-color);
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .screenshot-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px -10px rgba(11, 181, 128, 0.3);
+        }
+
+        .screenshot-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .screenshot-caption {
+            padding: 16px;
+            background: var(--bg-card-elevated);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .screenshot-caption h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .screenshot-caption p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Features Grid */
+        .features-section {
+            padding: 80px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .feature-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 36px 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
+
+        .feature-box:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon-wrap {
+            width: 54px;
+            height: 54px;
+            border-radius: var(--radius-md);
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 22px;
+            font-size: 1.5rem;
+        }
+
+        .feature-box h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feature-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Comparison Table Section */
+        .comparison-section {
+            padding: 80px 0;
+        }
+
+        .table-wrap {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: #151D24;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        th.featured-col {
+            color: var(--primary-light);
+            background: rgba(11, 181, 128, 0.1);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        td.featured-col {
+            background: rgba(11, 181, 128, 0.04);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .badge-check {
+            color: var(--primary);
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-cross {
+            color: #E74C3C;
+            font-weight: 600;
+        }
+
+        /* How It Works Steps */
+        .how-section {
+            padding: 80px 0;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            position: relative;
+        }
+
+        .step-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 36px 28px;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: #FFFFFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 6px 18px var(--primary-glow);
+        }
+
+        .step-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+        }
+
+        /* FAQ Accordion */
+        .faq-section {
+            padding: 80px 0;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: 14px;
+            overflow: hidden;
+            transition: border-color 0.2s ease;
+        }
+
+        .faq-item.active {
+            border-color: var(--border-hover);
+        }
+
+        .faq-question {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.05rem;
+            user-select: none;
+        }
+
+        .faq-toggle-icon {
+            font-size: 1.3rem;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            padding: 0 24px 22px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        /* Download Banner CTA */
+        .cta-banner {
+            padding: 80px 0;
+        }
+
+        .cta-card {
+            background: linear-gradient(135deg, #121F1B 0%, #0D1614 100%);
+            border: 1.5px solid var(--border-hover);
+            border-radius: var(--radius-xl);
+            padding: 60px 48px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(11, 181, 128, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-card h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .cta-card p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto 36px;
+        }
+
+        /* Lightbox Modal */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 480px;
+            max-height: 90vh;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+        }
+
+        .lightbox-content img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 2rem;
+            color: #FFFFFF;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .lightbox-close:hover {
+            background: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 60px 0 40px;
+            background: #05080A;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand p {
+            margin-top: 12px;
+            max-width: 320px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-col h4 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-desc {
+                margin: 0 auto 36px;
+            }
+            .hero-actions {
+                justify-content: center;
+            }
+            .hero-stats-row {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            .hero-mockup-wrapper {
+                margin-top: 40px;
+            }
+            .features-grid, .steps-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.6rem;
+            }
+            .floating-card-1 {
+                left: 0;
+                top: 5%;
+            }
+            .floating-card-2 {
+                right: 0;
+                bottom: 5%;
+            }
+            .cta-card {
+                padding: 40px 20px;
+            }
+            .cta-card h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="index.html" class="brand" id="navBrand">
+                <img src="play_store_assets/caloriecam-pro-complete-512-removebg-preview.png" alt="CalorieCam AI Icon">
+                <div class="brand-text">
+                    <span class="brand-name">CalorieCam<span>AI</span></span>
+                    <span class="brand-sub">Nutrition & Vision AI</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#screenshots">Screenshots</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#compare">Why Us</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+            </ul>
+
+            <a href="#download" class="nav-cta-btn" id="navDownloadBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>
+                Download Free
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span>⚡ Powered by Google Gemini Vision AI</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Snap Food. Track Macros. <span class="gradient-text">Hit Your Goals.</span>
+                    </h1>
+                    <p class="hero-desc">
+                        No more typing endless ingredients. Simply take a photo of your plate — CalorieCam AI detects dishes, calculates net calories, and breaks down protein, carbs, and fat in seconds.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#download" class="btn-playstore" id="heroPlayStoreBtn">
+                            <svg viewBox="0 0 24 24"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>
+                            <div class="btn-text-block">
+                                <span class="tiny">Available on</span>
+                                <span class="big">Google Play</span>
+                            </div>
+                        </a>
+                        <a href="#screenshots" class="btn-secondary" id="heroScreenshotsBtn">
+                            <span>View App Demo</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+                        </a>
+                    </div>
+
+                    <div class="hero-stats-row">
+                        <div class="stat-item">
+                            <h3>1 <span>Sec</span></h3>
+                            <p>Photo AI Recognition</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>15 <span>Tokens</span></h3>
+                            <p>Free on Sign-Up</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>100% <span>Private</span></h3>
+                            <p>Local Room & Cloud Sync</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Hero Device Mockup -->
+                <div class="hero-mockup-wrapper">
+                    <div class="mockup-glow"></div>
+                    
+                    <div class="floating-card floating-card-1">
+                        <div class="floating-icon">🔥</div>
+                        <div class="floating-text">
+                            <h4>520 kcal</h4>
+                            <p>Grilled Chicken & Quinoa</p>
+                        </div>
+                    </div>
+
+                    <div class="phone-frame">
+                        <div class="phone-notch"></div>
+                        <img src="play_store_assets/aso_02_ai_food_scan.png" alt="CalorieCam AI Food Scan" class="phone-screen" id="heroPhoneImage">
+                    </div>
+
+                    <div class="floating-card floating-card-2">
+                        <div class="floating-icon">⚡</div>
+                        <div class="floating-text">
+                            <h4>1 AI Token Used</h4>
+                            <p>Instant Macro Breakdown</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Play Store Screenshots Carousel -->
+    <section class="screenshots-section" id="screenshots">
+        <div class="container">
+            <div class="slider-controls-row">
+                <div>
+                    <span class="section-badge">Play Store Showcase</span>
+                    <h2 class="section-title" style="margin-bottom: 0;">Designed for Real Life</h2>
+                </div>
+                <div class="slider-arrows">
+                    <button class="slider-arrow-btn" id="slidePrevBtn" aria-label="Previous Screenshot">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <button class="slider-arrow-btn" id="slideNextBtn" aria-label="Next Screenshot">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scrollable Track with Real Play Store Assets -->
+            <div class="slider-track" id="screenshotTrack">
+                
+                <div class="screenshot-card" onclick="openLightbox('play_store_assets/aso_01_net_calories.png')">
+                    <img src="play_store_assets/aso_01_net_calories.png" alt="Net Calories Dashboard">
+                    <div class="screenshot-caption">
+                        <h4>Net Calories & Macros</h4>
+                        <p>Real-time intake vs burn tracking</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-card" onclick="openLightbox('play_store_assets/aso_02_ai_food_scan.png')">
+                    <img src="play_store_assets/aso_02_ai_food_scan.png" alt="AI Food Scan">
+                    <div class="screenshot-caption">
+                        <h4>Vision AI Camera Scan</h4>
+                        <p>1-second accurate meal detection</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-card" onclick="openLightbox('play_store_assets/aso_03_steps_water_burn.png')">
+                    <img src="play_store_assets/aso_03_steps_water_burn.png" alt="Steps, Water and Burn">
+                    <div class="screenshot-caption">
+                        <h4>Steps, Water & Burn</h4>
+                        <p>Complete daily wellness companion</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-card" onclick="openLightbox('play_store_assets/aso_04_ai_coach.png')">
+                    <img src="play_store_assets/aso_04_ai_coach.png" alt="AI Nutrition Coach">
+                    <div class="screenshot-caption">
+                        <h4>AI Nutritionist Chat</h4>
+                        <p>24/7 personalized diet advice</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-card" onclick="openLightbox('play_store_assets/aso_05_log_meals.png')">
+                    <img src="play_store_assets/aso_05_log_meals.png" alt="Log Meals">
+                    <div class="screenshot-caption">
+                        <h4>Fast Meal Logging</h4>
+                        <p>Detailed breakdown with photo history</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-card" onclick="openLightbox('play_store_assets/aso_06_custom_goals.png')">
+                    <img src="play_store_assets/aso_06_custom_goals.png" alt="Custom Targets">
+                    <div class="screenshot-caption">
+                        <h4>Custom Goals</h4>
+                        <p>Tailored calorie & macro targets</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-card" onclick="openLightbox('play_store_assets/aso_07_weekly_progress.png')">
+                    <img src="play_store_assets/aso_07_weekly_progress.png" alt="Weekly Progress">
+                    <div class="screenshot-caption">
+                        <h4>Weekly Trends & Graphs</h4>
+                        <p>Interactive analytics to keep streaks</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-card" onclick="openLightbox('play_store_assets/aso_08_activity_history.png')">
+                    <img src="play_store_assets/aso_08_activity_history.png" alt="Activity History">
+                    <div class="screenshot-caption">
+                        <h4>Activity History</h4>
+                        <p>Review past meals, burns, and logs</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Next-Gen Capabilities</span>
+                <h2 class="section-title">Everything You Need To Master Nutrition</h2>
+                <p class="section-desc">Engineered from the ground up for speed, simplicity, and scientifically sound health tracking.</p>
+            </div>
+
+            <div class="features-grid">
+                
+                <div class="feature-box">
+                    <div class="feature-icon-wrap">📸</div>
+                    <h3>Gemini Vision AI Scanner</h3>
+                    <p>Powered by Google Gemini 2.5 multimodal vision models. Detects multiple food items on a single plate, estimates portion weights, and automatically extracts macros.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-wrap">⚖️</div>
+                    <h3>Smart Net Calories</h3>
+                    <p>Track your true daily energy balance: <em>Eaten Calories minus Active Burned Calories</em>. Automatically integrates with steps and workouts so you know where you stand.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-wrap">💬</div>
+                    <h3>24/7 AI Nutrition Coach</h3>
+                    <p>Ask nutrition questions anytime in natural chat. Ask for low-carb substitutions, high-protein snack ideas, or send a food image directly to the chat for a second opinion.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-wrap">💧</div>
+                    <h3>Hydration & Water Counter</h3>
+                    <p>Keep your hydration optimal with quick-tap water logging (250ml / 500ml / custom), daily goals, and animated hydration meters.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-wrap">⚡</div>
+                    <h3>Fair & Transparent Token System</h3>
+                    <p>Start with <strong>15 Free AI Tokens</strong> on signup. Earn extra tokens easily or upgrade to Unlimited Premium. 1 token equals 1 full photo analysis.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-wrap">🛡️</div>
+                    <h3>Guest Mode & Cloud Sync</h3>
+                    <p>Value your privacy? Use 100% offline as a Guest with local Room DB. Want multi-device sync? Log in with Google or Email backed by encrypted Supabase Cloud.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-section" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Simple 3-Step Process</span>
+                <h2 class="section-title">How CalorieCam AI Works</h2>
+                <p class="section-desc">From plate to log in less time than it takes to type a search query.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Snap Your Meal</h3>
+                    <p>Open CalorieCam AI and take a photo of your breakfast, lunch, or dinner, or choose from your phone gallery.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Instant Vision AI Scan</h3>
+                    <p>In 1 second, our AI analyzes the image, identifies the ingredients, and computes calories, protein, carbs, and fats.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Log & Hit Targets</h3>
+                    <p>Review the pre-filled nutrition card, adjust portions if you want, and save to your daily diary with a single tap.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="comparison-section" id="compare">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">The Upgrade You Deserve</span>
+                <h2 class="section-title">CalorieCam AI vs. Traditional Apps</h2>
+                <p class="section-desc">Why thousands of fitness enthusiasts are switching to vision-first tracking.</p>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Traditional Trackers</th>
+                            <th class="featured-col">CalorieCam AI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Meal Logging Method</strong></td>
+                            <td>Tedious manual text typing & barcode searching</td>
+                            <td class="featured-col"><span class="badge-check">✓ 1-Second Camera AI Scan</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>AI Visual Recognition</strong></td>
+                            <td><span class="badge-cross">✗ Not Available / Paywalled</span></td>
+                            <td class="featured-col"><span class="badge-check">✓ Google Gemini Multimodal Vision</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Net Calories (Intake - Burn)</strong></td>
+                            <td>Requires paid premium add-ons</td>
+                            <td class="featured-col"><span class="badge-check">✓ Included out of the box</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interactive AI Coach Chat</strong></td>
+                            <td><span class="badge-cross">✗ Generic pre-written tips</span></td>
+                            <td class="featured-col"><span class="badge-check">✓ 24/7 Personalized AI Coach</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Guest Mode / Offline Privacy</strong></td>
+                            <td><span class="badge-cross">✗ Mandatory account & data harvesting</span></td>
+                            <td class="featured-col"><span class="badge-check">✓ 100% Offline Guest Mode available</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Free Starting Tokens</strong></td>
+                            <td>0 Free analyses</td>
+                            <td class="featured-col"><span class="badge-check">✓ 15 Free AI Tokens for all users</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Frequently Asked Questions</span>
+                <h2 class="section-title">Got Questions? We Have Answers.</h2>
+            </div>
+
+            <div class="faq-item active">
+                <div class="faq-question">
+                    <span>How accurate is the AI food recognition?</span>
+                    <span class="faq-toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    CalorieCam AI is powered by Google's state-of-the-art Gemini multimodal vision models, trained on millions of culinary dishes worldwide. It achieves over 95% accuracy on common meals, and you can always adjust detected portions before saving.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Is CalorieCam AI free to use?</span>
+                    <span class="faq-toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! Every user receives 15 free AI analysis tokens immediately upon signup. You can also log manual meals, water, and steps completely free forever. Extra AI tokens can be earned by watching rewarded videos or purchased in affordable packs.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Can I use the app without creating an account?</span>
+                    <span class="faq-toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    Absolutely. We offer a dedicated "Continue as Guest" mode. In Guest mode, all your meal records, macros, and history are stored strictly locally on your Android device's SQLite database without uploading any personal email.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Are my photos kept private and secure?</span>
+                    <span class="faq-toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    Yes. Photos are processed exclusively over encrypted TLS connections for the sole purpose of identifying food and computing nutritional information. We never sell, share, or use your photos for advertising. Read our <a href="privacy.html" style="color: var(--primary);">Privacy Policy</a> for full details.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Which Android versions are supported?</span>
+                    <span class="faq-toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    CalorieCam AI supports Android 7.0 (Nougat, API 24) all the way up to Android 15 / 16 (API 35+), ensuring seamless compatibility across virtually all modern Android smartphones and tablets.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download CTA Banner -->
+    <section class="cta-banner" id="download">
+        <div class="container">
+            <div class="cta-card">
+                <h2>Start Your AI Nutrition Journey Today</h2>
+                <p>Join thousands of smart dieters who stopped typing and started snapping. Download CalorieCam AI free on Google Play.</p>
+                <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+                    <a href="https://play.google.com/store/apps/details?id=com.professorstudio.caloriecamai" class="btn-playstore" id="ctaPlayStoreBtn">
+                        <svg viewBox="0 0 24 24"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>
+                        <div class="btn-text-block">
+                            <span class="tiny">Get it on</span>
+                            <span class="big">Google Play</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal for Screenshots -->
+    <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <img id="lightboxImage" src="" alt="Full Preview">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="brand" style="margin-bottom: 8px;">
+                        <img src="play_store_assets/caloriecam-pro-complete-512-removebg-preview.png" alt="CalorieCam AI">
+                        <div class="brand-name">CalorieCam<span>AI</span></div>
+                    </a>
+                    <p>The vision-first calorie and macronutrient companion built for modern Android devices. Effortless wellness tracking powered by AI.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="#features">Key Features</a></li>
+                        <li><a href="#screenshots">Play Store Showcase</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#compare">Comparison</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Legal & Support</h4>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="mailto:support@professorstudio.com">Contact Support</a></li>
+                        <li><span style="color: var(--text-muted);">Package: com.professorstudio.caloriecamai</span></li>
+                        <li><span style="color: var(--text-muted);">Version: 1.0 (2026)</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 <strong>Professor Studio</strong>. All rights reserved. CalorieCam AI is published by Professor Studio.</p>
+                <p>Designed with ❤️ for Healthy Living & Nutrition Mastery.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript Logic -->
+    <script>
+        // FAQ Accordion Toggle
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const parent = q.parentElement;
+                const wasActive = parent.classList.contains('active');
+                
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                if (!wasActive) {
+                    parent.classList.add('active');
+                }
+            });
+        });
+
+        // Screenshot Slider Scroll Arrows
+        const track = document.getElementById('screenshotTrack');
+        document.getElementById('slideNextBtn').addEventListener('click', () => {
+            track.scrollBy({ left: 320, behavior: 'smooth' });
+        });
+        document.getElementById('slidePrevBtn').addEventListener('click', () => {
+            track.scrollBy({ left: -320, behavior: 'smooth' });
+        });
+
+        // Screenshot Lightbox
+        const lightbox = document.getElementById('lightboxModal');
+        const lightboxImg = document.getElementById('lightboxImage');
+
+        function openLightbox(src) {
+            lightboxImg.src = src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
+</body>
+</html>

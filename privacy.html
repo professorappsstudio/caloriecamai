@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - CalorieCam AI</title>
+    <meta name="description" content="Official Privacy Policy for CalorieCam AI (com.professorstudio.caloriecamai). Learn how we handle your camera permissions, nutritional data, and AI food analysis.">
+    <link rel="icon" type="image/png" href="play_store_assets/caloriecam-pro-complete-512-removebg-preview.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0BB580;
+            --primary-dark: #089367;
+            --primary-soft: rgba(11, 181, 128, 0.1);
+            --primary-glow: rgba(11, 181, 128, 0.25);
+            --bg-page: #0B0F12;
+            --bg-card: #131920;
+            --bg-card-elevated: #1A222C;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(11, 181, 128, 0.3);
+            --text-primary: #F3F4F6;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            --accent-orange: #F39C12;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header / Nav */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 15, 18, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+        }
+
+        .nav-container {
+            max-width: 1080px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .brand-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .brand-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-name span {
+            color: var(--primary);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background: var(--primary-soft);
+        }
+
+        /* Hero Banner */
+        .policy-hero {
+            background: radial-gradient(circle at 50% 0%, rgba(11, 181, 128, 0.15) 0%, transparent 70%);
+            padding: 60px 24px 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary-soft);
+            color: var(--primary);
+            border: 1px solid var(--primary-glow);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 16px;
+        }
+
+        .policy-hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .policy-hero p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 650px;
+            margin: 0 auto 16px;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .meta-info span strong {
+            color: var(--text-primary);
+        }
+
+        /* Content Container */
+        .content-wrap {
+            max-width: 880px;
+            margin: 40px auto 80px;
+            padding: 0 24px;
+        }
+
+        .legal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 36px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .legal-card h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.45rem;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legal-card h2 .section-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            border-radius: 50%;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .legal-card p {
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+            margin-bottom: 16px;
+        }
+
+        .legal-card ul {
+            margin: 12px 0 18px 24px;
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+        }
+
+        .legal-card li {
+            margin-bottom: 8px;
+        }
+
+        .legal-card strong {
+            color: var(--text-primary);
+        }
+
+        .highlight-box {
+            background: rgba(11, 181, 128, 0.08);
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .warning-box {
+            background: rgba(243, 156, 18, 0.08);
+            border-left: 4px solid var(--accent-orange);
+            padding: 16px 20px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 32px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            background: #080B0E;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .legal-card {
+                padding: 24px 20px;
+            }
+            .policy-hero h1 {
+                font-size: 1.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo" id="headerLogo">
+                <img src="play_store_assets/caloriecam-pro-complete-512-removebg-preview.png" alt="CalorieCam AI Logo">
+                <div class="brand-name">CalorieCam<span>AI</span></div>
+            </a>
+            <a href="index.html" class="back-link" id="backToHomeBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                Back to Home
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="policy-hero">
+        <div class="badge">Legal & Compliance</div>
+        <h1>Privacy Policy</h1>
+        <p>Transparency and protection for your personal nutrition, meal photographs, and account data.</p>
+        <div class="meta-info">
+            <span>Application: <strong>CalorieCam AI</strong></span>
+            <span>Package: <strong>com.professorstudio.caloriecamai</strong></span>
+            <span>Effective Date: <strong>September 13, 2026</strong></span>
+            <span>Developer: <strong>Professor Studio</strong></span>
+        </div>
+    </section>
+
+    <!-- Content Sections -->
+    <main class="content-wrap">
+
+        <div class="legal-card" id="section-introduction">
+            <h2><span class="section-num">1</span> Introduction</h2>
+            <p>Welcome to <strong>CalorieCam AI</strong> ("we," "our," or "us"), provided and maintained by <strong>Professor Studio</strong>. We respect your privacy and are committed to safeguarding your personal data, nutritional logs, and photo uploads.</p>
+            <p>This Privacy Policy outlines our practices regarding the collection, storage, processing, and disclosure of information when you download, install, and use the <strong>CalorieCam AI</strong> mobile application on Android.</p>
+            <div class="highlight-box">
+                <strong>Our Privacy Commitment:</strong> CalorieCam AI will never sell, rent, or trade your personal health data, email address, or meal photos to third-party data brokers or advertisers.
+            </div>
+        </div>
+
+        <div class="legal-card" id="section-data-collection">
+            <h2><span class="section-num">2</span> Information We Collect</h2>
+            <p>Depending on whether you use the application as a <strong>Guest</strong> or as a <strong>Registered User</strong> (Email or Google Sign-In), we may collect the following categories of information:</p>
+
+            <h3>A. Camera and Image Data (Food Photos)</h3>
+            <ul>
+                <li><strong>Captured & Uploaded Photos:</strong> When you use our camera or gallery picker to analyze meals, the image file is temporarily processed to extract nutritional values (calories, protein, carbohydrates, fats).</li>
+                <li><strong>Purpose Limitation:</strong> Images are processed exclusively for food identification and macro estimation. We do not extract biometric facial data or background ambient monitoring from your images.</li>
+            </ul>
+
+            <h3>B. Nutritional, Activity & Health Diary Data</h3>
+            <ul>
+                <li><strong>Meal Logs:</strong> Food names, detected calories, macronutrients (proteins, carbs, fats), meal timing, and custom notes.</li>
+                <li><strong>Wellness Goals:</strong> Daily calorie targets, water consumption (ml), daily step counts, and active burn calories.</li>
+                <li><strong>Meal History:</strong> Historical records of meals for weekly trend visualization and analytics.</li>
+            </ul>
+
+            <h3>C. Account & Profile Information (Optional)</h3>
+            <ul>
+                <li><strong>Google Sign-In:</strong> Full name, verified email address, Google User ID, and profile photo avatar URL provided via Google OAuth 2.0.</li>
+                <li><strong>Email Authentication:</strong> Display name, email address, and encrypted password authentication tokens managed securely through Supabase Auth.</li>
+                <li><strong>Guest Mode:</strong> If you select "Continue as Guest", no email, name, or account credentials are collected or uploaded to our remote servers. All data remains exclusively on your device.</li>
+            </ul>
+
+            <h3>D. AI Tokens & Store Transactions</h3>
+            <ul>
+                <li><strong>Token Balance:</strong> Quantity of remaining AI analysis tokens associated with your profile.</li>
+                <li><strong>Subscription Status:</strong> Premium vs. Free tier flags to manage access to unlimited analyses.</li>
+            </ul>
+        </div>
+
+        <div class="legal-card" id="section-permissions">
+            <h2><span class="section-num">3</span> Android Device Permissions</h2>
+            <p>To provide its core AI capabilities, the app requests the following runtime Android permissions:</p>
+            <ul>
+                <li><strong>CAMERA (<code>android.permission.CAMERA</code>):</strong> Required to take real-time photos of your food plate for instant AI analysis. You can choose to revoke this permission at any time and upload photos via gallery instead.</li>
+                <li><strong>READ_MEDIA_IMAGES / READ_EXTERNAL_STORAGE:</strong> Required solely to allow you to select existing meal photos from your device gallery.</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> Used optionally to deliver timely meal logging reminders, water tracking prompts, and health streak achievements.</li>
+                <li><strong>INTERNET:</strong> Required to query the AI vision models (Google Gemini API) and synchronize your cloud profile via Supabase.</li>
+            </ul>
+        </div>
+
+        <div class="legal-card" id="section-ai-processing">
+            <h2><span class="section-num">4</span> AI Processing & Third-Party Service Providers</h2>
+            <p>To analyze food and provide nutritional insights, CalorieCam AI interfaces with industry-standard, secure infrastructure providers:</p>
+            <ul>
+                <li><strong>Google Gemini Vision AI:</strong> Food photos and user chat prompts are transmitted securely via TLS/HTTPS to Google Gemini APIs to identify food ingredients, estimate portion weights, and calculate macronutrient values. Google processes these requests in compliance with enterprise security standards.</li>
+                <li><strong>Supabase (Cloud Backend):</strong> Used for secure user authentication, token ledger accounting, and optional cloud profile backup. Data stored in Supabase is protected by strict PostgreSQL Row-Level Security (RLS) policies.</li>
+                <li><strong>Google Play Services:</strong> Used for authentication, app integrity checks, and official application distribution.</li>
+            </ul>
+        </div>
+
+        <div class="legal-card" id="section-storage-retention">
+            <h2><span class="section-num">5</span> Data Storage & Guest Mode</h2>
+            <p>We believe in user autonomy and data minimization:</p>
+            <div class="warning-box">
+                <strong>Guest Mode (100% On-Device):</strong> When using CalorieCam AI as a Guest, all meal records, macro values, water logs, and settings are saved strictly on your device’s local Room SQLite database. If you uninstall the app or clear app data in Guest Mode, this local data is deleted.
+            </div>
+            <p>For authenticated users, your profile information and token balance are synchronized with your protected Supabase cloud profile so you can restore them upon reinstalling the app or switching devices.</p>
+        </div>
+
+        <div class="legal-card" id="section-user-rights">
+            <h2><span class="section-num">6</span> Your Rights & Account Deletion</h2>
+            <p>In accordance with global privacy regulations (including GDPR, CCPA, and Google Play Store policies), you have the right to:</p>
+            <ul>
+                <li><strong>Access & View:</strong> Review all meal data, calorie totals, and account information directly inside the app.</li>
+                <li><strong>Update & Edit:</strong> Modify your display name, profile avatar, and calorie/water goals via the Profile & Settings screens.</li>
+                <li><strong>Delete Your Account & Data:</strong> You may request complete deletion of your account and all associated cloud records at any time. Simply contact our privacy team at <a href="mailto:support@professorstudio.com">support@professorstudio.com</a> or use the in-app account options. All associated cloud records will be permanently expunged within 30 days.</li>
+            </ul>
+        </div>
+
+        <div class="legal-card" id="section-children">
+            <h2><span class="section-num">7</span> Children's Privacy</h2>
+            <p>CalorieCam AI is intended for general audiences and is not directed to children under the age of 13. We do not knowingly collect or solicit personal information from children under 13. If we become aware that a child under 13 has provided us with personal information, we will immediately delete such data from our servers.</p>
+        </div>
+
+        <div class="legal-card" id="section-changes">
+            <h2><span class="section-num">8</span> Changes to This Privacy Policy</h2>
+            <p>We may update our Privacy Policy from time to time to reflect improvements to our AI services or regulatory requirements. Any modifications will be posted on this page with an updated Effective Date. Continued use of CalorieCam AI following the posting of changes constitutes acceptance of those changes.</p>
+        </div>
+
+        <div class="legal-card" id="section-contact">
+            <h2><span class="section-num">9</span> Contact Information</h2>
+            <p>If you have any questions, feedback, or requests regarding this Privacy Policy or your personal data, please contact our support team:</p>
+            <ul>
+                <li><strong>Developer / Publisher:</strong> Professor Studio</li>
+                <li><strong>Email:</strong> <a href="mailto:support@professorstudio.com">support@professorstudio.com</a></li>
+                <li><strong>Application:</strong> CalorieCam AI (Android)</li>
+                <li><strong>Location:</strong> Pakistan</li>
+            </ul>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 <strong>Professor Studio</strong>. All rights reserved. CalorieCam AI is a trademark of Professor Studio.</p>
+        <p style="margin-top: 8px;">
+            <a href="index.html">App Overview</a> &bull;
+            <a href="privacy.html">Privacy Policy</a>
+        </p>
+    </footer>
+
+</body>
+</html>
